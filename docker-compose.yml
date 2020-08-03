@@ -1,0 +1,24 @@
+version: "3"
+services:
+  db:
+    #构建mysql镜像
+    image: ${MYSQL_IMAGE}
+    container_name: db-mysql
+    environment:
+      TZ: Asia/Shanghai
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: test
+      MYSQL_USER: jade
+      MYSQL_PASSWORD: ${JADE_PASSWORD}
+    restart: always
+    ports:
+      - 3306:3306
+    volumes:
+      - $PWD/config:/etc/mysql
+      - $PWD/logs:/var/log/mysql
+      - $PWD/data:/var/lib/mysql
+    command:
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_unicode_ci
+      --default-authentication-plugin=mysql_native_password
+      --max_connections=1000
